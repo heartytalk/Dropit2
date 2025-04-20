@@ -1,8 +1,7 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>한글 자음·모음 카드 언어치료 게임</title>
+  <title>한글 자음·모음 카드 언어치료 게임 (실제 자모 위치)</title>
   <style>
     body {
       font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
@@ -11,36 +10,37 @@
     }
     .container {
       display: flex;
-      max-width: 900px;
+      max-width: 1500px;
       margin: 40px auto;
       background: #fff;
       border-radius: 18px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      min-height: 480px;
+      min-height: 900px;
       padding: 30px;
     }
     .cards {
-      width: 120px;
+      width: 360px;
       background: #e8eaf6;
-      border-radius: 12px;
-      padding: 18px 8px;
+      border-radius: 24px;
+      padding: 28px 8px;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 24px;
       align-content: flex-start;
-      margin-right: 32px;
-      min-width: 120px;
-      min-height: 400px;
+      margin-right: 64px;
+      min-width: 360px;
+      min-height: 800px;
+      justify-content: center;
     }
     .card {
-      width: 38px; height: 38px;
+      width: 114px; height: 114px;
       background: #fff;
-      border: 2px solid #3949ab;
-      border-radius: 8px;
+      border: 4px solid #3949ab;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.7em;
+      font-size: 5em;
       font-weight: bold;
       color: #3949ab;
       cursor: grab;
@@ -58,25 +58,36 @@
       justify-content: flex-start;
     }
     .word-area {
-      margin-top: 50px;
+      margin-top: 60px;
       margin-bottom: 30px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 36px;
+    }
+    .syllable-box {
+      width: 260px;
+      height: 260px;
+      position: relative;
+      display: inline-block;
+      margin: 0 10px;
     }
     .dropzone {
-      width: 48px; height: 58px;
+      position: absolute;
       background: #f0f4ff;
-      border: 2px dashed #b0bec5;
-      border-radius: 10px;
-      display: inline-flex;
+      border: 4px dashed #b0bec5;
+      border-radius: 18px;
+      width: 110px; height: 110px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.1em;
-      margin: 0 3px;
+      font-size: 4em;
       transition: border-color 0.2s, background 0.2s;
-      position: relative;
+      z-index: 2;
+      box-sizing: border-box;
     }
+    .dropzone.cho { left: 8px; top: 10px;}
+    .dropzone.jung { left: 130px; top: 10px;}
+    .dropzone.jong { left: 70px; top: 145px;}
     .dropzone.correct {
       border-color: #43a047;
       background: #e8f5e9;
@@ -94,10 +105,10 @@
     }
     @keyframes shake {
       0% { transform: translateX(0);}
-      20% { transform: translateX(-6px);}
-      40% { transform: translateX(6px);}
-      60% { transform: translateX(-4px);}
-      80% { transform: translateX(4px);}
+      20% { transform: translateX(-16px);}
+      40% { transform: translateX(16px);}
+      60% { transform: translateX(-10px);}
+      80% { transform: translateX(10px);}
       100% { transform: translateX(0);}
     }
     .hint {
@@ -119,24 +130,24 @@
     }
     #message {
       min-height: 32px;
-      font-size: 1.3em;
+      font-size: 2.5em;
       font-weight: bold;
       color: #3949ab;
-      margin-bottom: 10px;
-      margin-top: 15px;
+      margin-bottom: 20px;
+      margin-top: 20px;
       text-align: center;
-      height: 36px;
+      height: 50px;
     }
     #score {
-      font-size: 1.1em;
+      font-size: 2em;
       color: #666;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       text-align: center;
     }
     .star {
       position: absolute;
       color: gold;
-      font-size: 2.2em;
+      font-size: 3.5em;
       pointer-events: none;
       animation: pop 0.7s ease;
       z-index: 100;
@@ -147,13 +158,13 @@
       100% { opacity: 0; transform: scale(0.8) translateY(-40px);}
     }
     .next-btn {
-      margin-top: 18px;
-      padding: 9px 28px;
+      margin-top: 28px;
+      padding: 18px 54px;
       background: #3949ab;
       color: #fff;
       border: none;
-      border-radius: 8px;
-      font-size: 1em;
+      border-radius: 12px;
+      font-size: 2em;
       cursor: pointer;
       font-weight: bold;
       transition: background 0.2s;
@@ -161,11 +172,16 @@
     .next-btn:active {
       background: #283593;
     }
-    @media (max-width: 700px) {
+    @media (max-width: 1200px) {
       .container {flex-direction: column; padding: 10px;}
       .cards {flex-direction: row; min-width: unset; min-height: unset; margin: 0 auto 15px auto;}
       .game-area {align-items: stretch;}
       .word-area {justify-content: center;}
+      .syllable-box {width: 180px; height: 180px;}
+      .dropzone {width: 70px; height: 70px; font-size: 2.2em;}
+      .dropzone.cho { left: 3px; top: 3px;}
+      .dropzone.jung { left: 80px; top: 3px;}
+      .dropzone.jong { left: 40px; top: 95px;}
     }
   </style>
 </head>
@@ -237,36 +253,34 @@
       let word = quizWords[currentIndex];
       for (let i = 0; i < word.length; i++) {
         const [cho, jung, jong] = decomposeHangul(word[i]);
-        answerArr.push(cho, jung, ...(jong ? [jong] : []));
-        // 초성
-        let dz1 = createDropzone(cho);
-        wordArea.appendChild(dz1);
-        dropzones.push(dz1);
-        // 중성
-        let dz2 = createDropzone(jung);
-        wordArea.appendChild(dz2);
-        dropzones.push(dz2);
-        // 종성
+        answerArr.push([cho, jung, jong]);
+        // 한 글자(음절)마다 박스 생성
+        let box = document.createElement('div');
+        box.className = 'syllable-box';
+        // 초성(왼쪽 위)
+        let dzCho = createDropzone(cho, 'cho');
+        box.appendChild(dzCho);
+        dropzones.push(dzCho);
+        // 중성(오른쪽 위)
+        let dzJung = createDropzone(jung, 'jung');
+        box.appendChild(dzJung);
+        dropzones.push(dzJung);
+        // 종성(아래)
         if (jong) {
-          let dz3 = createDropzone(jong);
-          wordArea.appendChild(dz3);
-          dropzones.push(dz3);
+          let dzJong = createDropzone(jong, 'jong');
+          box.appendChild(dzJong);
+          dropzones.push(dzJong);
         }
-        // 글자 간격
-        if (i < word.length-1) {
-          let space = document.createElement('span');
-          space.style.width = '12px';
-          wordArea.appendChild(space);
-        }
+        wordArea.appendChild(box);
       }
       filledArr = Array(dropzones.length).fill(false);
       updateScore();
       document.getElementById('next-btn').style.display = 'none';
     }
 
-    function createDropzone(answer) {
+    function createDropzone(answer, type) {
       const dz = document.createElement('div');
-      dz.className = 'dropzone';
+      dz.className = 'dropzone ' + type;
       // 힌트(회색) 추가
       const hint = document.createElement('span');
       hint.className = 'hint';
@@ -304,8 +318,8 @@
       const star = document.createElement('span');
       star.className = 'star';
       star.textContent = '★';
-      star.style.left = (x-20) + 'px';
-      star.style.top = (y-20) + 'px';
+      star.style.left = (x-40) + 'px';
+      star.style.top = (y-40) + 'px';
       document.body.appendChild(star);
       setTimeout(() => document.body.removeChild(star), 700);
     }
