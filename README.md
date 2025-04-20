@@ -100,6 +100,23 @@
       80% { transform: translateX(4px);}
       100% { transform: translateX(0);}
     }
+    .hint {
+      color: #bbb;
+      font-weight: normal;
+      pointer-events: none;
+      user-select: none;
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%; height: 100%;
+      font-size: 1em;
+      z-index: 0;
+    }
+    .dropzone.filled .hint {
+      display: none;
+    }
     #message {
       min-height: 32px;
       font-size: 1.3em;
@@ -250,14 +267,20 @@
     function createDropzone(answer) {
       const dz = document.createElement('div');
       dz.className = 'dropzone';
+      // 힌트(회색) 추가
+      const hint = document.createElement('span');
+      hint.className = 'hint';
+      hint.textContent = answer;
+      dz.appendChild(hint);
+
       dz.ondragover = e => e.preventDefault();
       dz.ondrop = function(e) {
         e.preventDefault();
         const dropped = e.dataTransfer.getData('text');
-        if (dz.textContent) return; // 이미 채워진 칸은 무시
+        if (dz.classList.contains('filled')) return; // 이미 채워진 칸은 무시
         if (dropped === answer) {
           dz.textContent = dropped;
-          dz.classList.add('correct');
+          dz.classList.add('correct', 'filled');
           dz.classList.remove('wrong');
           dz.ondrop = null;
           showStar(e.clientX, e.clientY);
