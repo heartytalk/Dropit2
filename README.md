@@ -1,7 +1,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>한글 자음·모음 카드 언어치료 게임 (실제 자모 위치)</title>
+  <title>한글 자음·모음 카드 언어치료 게임 (최적화)</title>
   <style>
     body {
       font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
@@ -10,37 +10,37 @@
     }
     .container {
       display: flex;
-      max-width: 1500px;
+      max-width: 1000px;
       margin: 40px auto;
       background: #fff;
       border-radius: 18px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      min-height: 900px;
+      min-height: 600px;
       padding: 30px;
     }
     .cards {
-      width: 360px;
+      width: 180px;
       background: #e8eaf6;
-      border-radius: 24px;
-      padding: 28px 8px;
+      border-radius: 12px;
+      padding: 18px 8px;
       display: flex;
       flex-wrap: wrap;
-      gap: 24px;
+      gap: 10px;
       align-content: flex-start;
-      margin-right: 64px;
-      min-width: 360px;
-      min-height: 800px;
+      margin-right: 32px;
+      min-width: 180px;
+      min-height: 420px;
       justify-content: center;
     }
     .card {
-      width: 114px; height: 114px;
+      width: 60px; height: 60px;
       background: #fff;
-      border: 4px solid #3949ab;
-      border-radius: 18px;
+      border: 2px solid #3949ab;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 5em;
+      font-size: 2.5em;
       font-weight: bold;
       color: #3949ab;
       cursor: grab;
@@ -58,36 +58,38 @@
       justify-content: flex-start;
     }
     .word-area {
-      margin-top: 60px;
+      margin-top: 40px;
       margin-bottom: 30px;
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .syllable-box {
-      width: 260px;
-      height: 260px;
+      width: 120px;
+      height: 120px;
       position: relative;
       display: inline-block;
-      margin: 0 10px;
+      margin: 0 4px;
     }
     .dropzone {
       position: absolute;
       background: #f0f4ff;
-      border: 4px dashed #b0bec5;
-      border-radius: 18px;
-      width: 110px; height: 110px;
+      border: 2px dashed #b0bec5;
+      border-radius: 8px;
+      width: 48px; height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 4em;
+      font-size: 2em;
       transition: border-color 0.2s, background 0.2s;
       z-index: 2;
       box-sizing: border-box;
     }
-    .dropzone.cho { left: 8px; top: 10px;}
-    .dropzone.jung { left: 130px; top: 10px;}
-    .dropzone.jong { left: 70px; top: 145px;}
+    .dropzone.cho { left: 3px; top: 6px;}
+    .dropzone.jung { left: 65px; top: 6px;}
+    .dropzone.jong { left: 35px; top: 68px;}
     .dropzone.correct {
       border-color: #43a047;
       background: #e8f5e9;
@@ -105,10 +107,10 @@
     }
     @keyframes shake {
       0% { transform: translateX(0);}
-      20% { transform: translateX(-16px);}
-      40% { transform: translateX(16px);}
-      60% { transform: translateX(-10px);}
-      80% { transform: translateX(10px);}
+      20% { transform: translateX(-8px);}
+      40% { transform: translateX(8px);}
+      60% { transform: translateX(-4px);}
+      80% { transform: translateX(4px);}
       100% { transform: translateX(0);}
     }
     .hint {
@@ -130,24 +132,24 @@
     }
     #message {
       min-height: 32px;
-      font-size: 2.5em;
+      font-size: 1.3em;
       font-weight: bold;
       color: #3949ab;
-      margin-bottom: 20px;
-      margin-top: 20px;
+      margin-bottom: 10px;
+      margin-top: 15px;
       text-align: center;
-      height: 50px;
+      height: 36px;
     }
     #score {
-      font-size: 2em;
+      font-size: 1.1em;
       color: #666;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-align: center;
     }
     .star {
       position: absolute;
       color: gold;
-      font-size: 3.5em;
+      font-size: 2.2em;
       pointer-events: none;
       animation: pop 0.7s ease;
       z-index: 100;
@@ -158,13 +160,13 @@
       100% { opacity: 0; transform: scale(0.8) translateY(-40px);}
     }
     .next-btn {
-      margin-top: 28px;
-      padding: 18px 54px;
+      margin-top: 18px;
+      padding: 9px 28px;
       background: #3949ab;
       color: #fff;
       border: none;
-      border-radius: 12px;
-      font-size: 2em;
+      border-radius: 8px;
+      font-size: 1.2em;
       cursor: pointer;
       font-weight: bold;
       transition: background 0.2s;
@@ -172,16 +174,16 @@
     .next-btn:active {
       background: #283593;
     }
-    @media (max-width: 1200px) {
+    @media (max-width: 700px) {
       .container {flex-direction: column; padding: 10px;}
       .cards {flex-direction: row; min-width: unset; min-height: unset; margin: 0 auto 15px auto;}
       .game-area {align-items: stretch;}
       .word-area {justify-content: center;}
-      .syllable-box {width: 180px; height: 180px;}
-      .dropzone {width: 70px; height: 70px; font-size: 2.2em;}
-      .dropzone.cho { left: 3px; top: 3px;}
-      .dropzone.jung { left: 80px; top: 3px;}
-      .dropzone.jong { left: 40px; top: 95px;}
+      .syllable-box {width: 70px; height: 70px;}
+      .dropzone {width: 28px; height: 28px; font-size: 1.1em;}
+      .dropzone.cho { left: 2px; top: 2px;}
+      .dropzone.jung { left: 36px; top: 2px;}
+      .dropzone.jong { left: 18px; top: 40px;}
     }
   </style>
 </head>
@@ -318,8 +320,8 @@
       const star = document.createElement('span');
       star.className = 'star';
       star.textContent = '★';
-      star.style.left = (x-40) + 'px';
-      star.style.top = (y-40) + 'px';
+      star.style.left = (x-20) + 'px';
+      star.style.top = (y-20) + 'px';
       document.body.appendChild(star);
       setTimeout(() => document.body.removeChild(star), 700);
     }
