@@ -1,7 +1,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>한글 자음·모음 카드 언어치료 게임 (최적화)</title>
+  <title>한글 자음·모음 카드 언어치료 게임 (최적화+정답만 카드)</title>
   <style>
     body {
       font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
@@ -227,11 +227,30 @@
       return [cho, jung, jong];
     }
 
-    // 카드 렌더링
-    function renderCards() {
+    // 카드 렌더링 (정답+랜덤5개)
+    function renderCardsForCurrentWord() {
       const cardsDiv = document.getElementById('cards');
       cardsDiv.innerHTML = '';
-      shuffle([...consonants, ...vowels]).forEach(char => {
+      let word = quizWords[currentIndex];
+
+      // 1. 정답에 필요한 자음/모음 추출
+      let answerSet = new Set();
+      for (let i = 0; i < word.length; i++) {
+        const [cho, jung, jong] = decomposeHangul(word[i]);
+        answerSet.add(cho);
+        answerSet.add(jung);
+        if (jong) answerSet.add(jong);
+      }
+      // 2. 오답 후보 목록 만들기
+      const allChars = [...consonants, ...vowels];
+      let wrongCandidates = allChars.filter(x => !answerSet.has(x));
+      let wrongs = shuffle(wrongCandidates).slice(0, 5);
+
+      // 3. 카드 배열 만들기 (정답+오답)
+      let cardArr = shuffle([...Array.from(answerSet), ...wrongs]);
+
+      // 4. 카드 렌더링
+      cardArr.forEach(char => {
         const card = document.createElement('div');
         card.className = 'card';
         card.textContent = char;
@@ -278,6 +297,7 @@
       filledArr = Array(dropzones.length).fill(false);
       updateScore();
       document.getElementById('next-btn').style.display = 'none';
+      renderCardsForCurrentWord();
     }
 
     function createDropzone(answer, type) {
@@ -377,6 +397,7 @@
     // 게임 종료
     function finishGame() {
       document.getElementById('word-area').innerHTML = '';
+      document.getElementById('cards').innerHTML = '';
       document.getElementById('message').innerHTML = `<span style="color:#43a047;">모든 단어를 완료했습니다!<br>최종 점수: ${score} / ${quizWords.length}</span>`;
       document.getElementById('next-btn').style.display = 'none';
       document.getElementById('score').textContent = '';
@@ -387,7 +408,6 @@
       quizWords = shuffle(fruits).slice(0, 10);
       currentIndex = 0;
       score = 0;
-      renderCards();
       renderWord();
     }
 
